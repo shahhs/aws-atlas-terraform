@@ -4,41 +4,42 @@ provider "mongodbatlas" {
 }
 
 resource "mongodbatlas_project" "aws_atlas" {
-  name   = "cbaird-new"
-  org_id = var.atlasorgid
+  name          = "cbaird-new"
+  org_id        = var.atlasorgid
 }
 
 resource "mongodbatlas_cluster" "cluster-atlas" {
-  project_id   = mongodbatlas_project.aws_atlas.id
-  name         = "cluster-atlas-terraformtest"
-  cluster_type = "REPLICASET"
+  project_id      = mongodbatlas_project.aws_atlas.id
+  name            = "cluster-atlas-terraformtest"
+  cluster_type    = "REPLICASET"
   replication_specs {
     num_shards = 1
     regions_config {
-      region_name     = "US_EAST_1"
-      electable_nodes = 3
-      priority        = 7
-      read_only_nodes = 0
+      region_name         = "US_EAST_1"
+      electable_nodes     = 3
+      priority            = 7
+      read_only_nodes     = 0
     }
   }
-  cloud_backup      = true
-  auto_scaling_disk_gb_enabled = true
-  mongo_db_major_version       = "5.0"
+  cloud_backup                  = true
+  auto_scaling_disk_gb_enabled  = true
+  mongo_db_major_version        = "5.0"
 
   //Provider Settings "block"
-  provider_name               = "AWS"
-  disk_size_gb                = 10
-  provider_instance_size_name = "M10"
+  provider_name                 = "AWS"
+  disk_size_gb                  = 10
+  provider_instance_size_name   = "M10"
 }
+
 //Creating the DB user + assigning permissions
 resource "mongodbatlas_database_user" "db-user" {
-  username           = var.atlas_dbuser
-  password           = var.atlas_dbpassword
-  auth_database_name = "admin"
-  project_id         = mongodbatlas_project.aws_atlas.id
+  username            = var.atlas_dbuser
+  password            = var.atlas_dbpassword
+  auth_database_name  = "admin"
+  project_id          = mongodbatlas_project.aws_atlas.id
   roles {
-    role_name     = "readWriteAnyDatabase"
-    database_name = "admin"
+    role_name         = "readWriteAnyDatabase"
+    database_name     = "admin"
   }
   depends_on = [mongodbatlas_project.aws_atlas]
 }

@@ -1,7 +1,7 @@
 # Deploying AWS and MongoDB Atlas Resources with Terraform
 
 This script provides a simple example of deploying infrastructure as code using Terraform.
-
+https://youtu.be/vPPjfdqH1aM?si=yx70oi2BRa52A2Cf 
 
 ## Dependencies
 
